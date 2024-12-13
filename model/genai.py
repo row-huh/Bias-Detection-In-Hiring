@@ -18,7 +18,7 @@ api = OpenAI(api_key=API_KEY, base_url=BASE_URL)
 
 
 def main():
-    completion = api.chat.completions.create(
+    completion = api.chat.completions.create( 
         model="mistralai/Mistral-7B-Instruct-v0.2",
         messages=[
             {"role": "system", "content": SYSTEM_PROMPT},
