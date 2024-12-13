@@ -1,0 +1,121 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Calligraffitti&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+* {
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family: "Poppins", sans-serif;
+}
+/* General Body Styling */
+body {
+    background-color: #F4F9FF; /* Light Cool Blue */
+    color: #2E3A59; /* Dark Slate Blue */
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+  
+    padding-top: 80px; /* Adjust this based on the navbar height */
+}
+.root{
+    --white-color :#fff;
+    --dark-color:#033e3b;
+    --primary-color:#20B2AA;
+    --secondry-color:#b2fffb;
+
+    --font-size-s:0.9rem;
+    --font-size-n: 1rem;
+    --font-size-m: 1.12rem;
+    --font-size-l: 1.5rem;
+    --font-size-xl: 2rem;
+    --font-size-xxl: 2.3rem;
+    
+    
+}
+
+.navbar{
+    background:rgb(0, 255, 225);
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 85%;
+    margin: auto;
+    padding: 35px 0; /* Padding for the navbar */
+    z-index: 1000; /* Ensure it stays on top of other content */
+    display: flex;
+    justify-content: space-between; /* Space between left and right sections */
+    align-items: center;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Optional shadow for visual effect */
+}
+
+.navbar .left-side {
+    display: flex;
+    align-items: center;
+}
+
+.navbar .left-side a {
+    color: white;
+    text-decoration: none;
+    margin-right: 20px; /* Spacing between links */
+    font-size: 18px;
+}
+
+.navbar .right-side {
+    margin-left: auto; /* Pushes the buttons to the right */
+    display: flex;
+    align-items: center;
+}
+
+.navbar .right-side button {
+    background-color: #6C8EBF; /* Light Blue */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    margin-left: 10px; /* Spacing between buttons */
+    cursor: pointer;
+}
+
+.navbar .right-side button:hover {
+    background-color: #4F70A0; /* Darker Blue */
+}
+
+
+/* Content Section Styling */
+.content-section {
+    margin-top: 100px; /* Offset the navbar */
+    text-align: center;
+    color: #2E3A59; /* Dark Slate Blue */
+}
+
+/* Footer Styling */
+.footer {
+    text-align: center;
+    margin-top: 2em;
+    color: #8E8E93; /* Soft Gray */
+}
+
+/* Custom Streamlit Button and Input Styling */
+.stButton > button {
+    background-color: #4C6A92;
+    color: white;
+    border-radius: 5px;
+    padding: 0.5em 1em;
+}
+
+.stButton > button:hover {
+    background-color: #6C8EBF;
+}
+
+.stAlert {
+    background-color: #FF8E7E; /* Muted Coral */
+    border-radius: 5px;
+}
+
+.stTextInput > div > input {
+    border: 1px solid #8E8E93; /* Neutral Gray */
+    border-radius: 5px;
+}
+
+.sidebar .sidebar-content {
+    background-color: #8E8E93; /* Neutral Gray */
+}

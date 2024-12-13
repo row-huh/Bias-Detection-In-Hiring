@@ -1,52 +1,58 @@
 import streamlit as st
 
-# Set page config
+# Set up the Streamlit page configuration
 st.set_page_config(
     page_title="Neutral - Bias Detection",
     page_icon="🔐",
-    layout="centered",
+    layout="wide",
     initial_sidebar_state="collapsed",
 )
 
-# Custom CSS for the color palette
+# Link the external CSS file
 st.markdown(
     """
-    <style>
-    body {
-        background-color: #F4F4F4; /* Soft White */
-        color: #333333; /* Dark Charcoal */
-        font-family: Arial, sans-serif;
-    }
-    .stButton > button {
-        background-color: #647AA3; /* Slate Blue */
-        color: white;
-        border-radius: 5px;
-        padding: 0.5em 1em;
-    }
-    .stButton > button:hover {
-        background-color: #87CEEB; /* Sky Blue */
-    }
-    .stAlert {
-        background-color: #FF8E7E; /* Muted Coral */
-        border-radius: 5px;
-    }
-    .stTextInput > div > input {
-        border: 1px solid #8E8E93; /* Neutral Gray */
-        border-radius: 5px;
-    }
-    .sidebar .sidebar-content {
-        background-color: #8E8E93; /* Neutral Gray */
-    }
-    </style>
+    <link rel="stylesheet" type="text/css" href="styles.css">
     """,
-    unsafe_allow_html=True
+    unsafe_allow_html=True,
 )
+
+# Navigation Bar: Left and Right Aligned Options
+st.markdown(
+    """
+    <header>
+    <div class="navbar">
+        <!-- Left-side Navigation Links -->
+        <div class="left-side">
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="#" class="nav-link">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">About</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">Services</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">Resume</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">Cover Letters</a>
+                </li>
+            </ul>
+        </div></header>
+    """,
+    unsafe_allow_html=True,
+)
+
 
 # Header Section
 st.markdown(
     """
-    <h1 style="text-align: center; color: #647AA3;">Neutral</h1>
-    <h3 style="text-align: center; color: #777777;">Detecting Biases in Hiring Practices</h3>
+    <div class="content-section">
+        <center><h1 style="color: #4C6A92;">Neutral</h1></center>
+        <center><h3 style="color: #6C8EBF;">Detecting Biases in Hiring </h3></center>
+    </div>
     """,
     unsafe_allow_html=True,
 )
@@ -54,38 +60,39 @@ st.markdown(
 # Input Section
 st.markdown(
     """
-    <h4 style="color: #999999;">Upload Hiring Data:</h4>
-    <p style="color: #666666;">Upload a CSV file containing candidate information and hiring decisions to analyze for potential biases.</p>
+    <div class="content-section">
+        <h4 style="color: #4C6A92;">Upload Hiring Data:</h4>
+        <p style="color: #6C8EBF;">Upload a CSV file containing candidate information and hiring decisions to analyze for potential biases.</p>
+    </div>
     """,
     unsafe_allow_html=True,
 )
 
-uploaded_file = st.file_uploader("Step 1: Upload Your CV", type="pdf")
-# Input Section
-st.markdown(
-    """
-    
-    <p style="color: #666666;">Upload a CSV file containing candidate information and hiring decisions to analyze for potential biases.</p>
-    """,
-    unsafe_allow_html=True,
-)
+uploaded_file_1 = st.file_uploader("Step 1: Upload Your CV", type="pdf")
+uploaded_file_2 = st.file_uploader("Step 2: Reason from Company on not being hired", type="pdf")
 
-uploaded_file = st.file_uploader("Step 2: Reason from Company on not being hired", type="pdf")
+# Display uploaded files
+if uploaded_file_1 is not None:
+    st.image(uploaded_file_1, caption="Uploaded CV", use_column_width=True)
+
+if uploaded_file_2 is not None:
+    st.image(uploaded_file_2, caption="Uploaded Reason File", use_column_width=True)
+
 # Analysis Button
 if st.button("Analyze for Biases"):
-    if uploaded_file is not None:
-        st.success("File uploaded successfully! Starting analysis...", icon="📊")
+    if uploaded_file_1 is not None and uploaded_file_2 is not None:
+        st.success("Files uploaded successfully! Starting analysis...", icon="📊")
         # Placeholder for actual analysis functionality
         st.info("Analysis is under development. Stay tuned!", icon="🔄")
     else:
-        st.error("Please upload a file before proceeding.", icon="⚠")
+        st.error("Please upload both files before proceeding.", icon="⚠")
 
 # Footer Section
 st.markdown(
     """
-    <footer style="text-align: center; margin-top: 2em;">
-        <p style="color: #8E8E93;">&copy; 2024 Neutral. All rights reserved.</p>
-    </footer>
+    <div class="footer">
+        <center><p>&copy; 2024 Neutral. All rights reserved.</p></center>
+    </div>
     """,
     unsafe_allow_html=True,
 )
