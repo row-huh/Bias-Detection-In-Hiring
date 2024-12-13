@@ -35,12 +35,12 @@ def save_uploaded_file(uploaded_file, file_path):
 
 # Display File Uploads and Save them
 if uploaded_file_1:
-    file_path_1 = os.path.join(UPLOAD_DIR, uploaded_file_1.name)
+    file_path_1 = os.path.join(UPLOAD_DIR, 'cv.pdf')
     save_uploaded_file(uploaded_file_1, file_path_1)
     st.write(f"✅ Uploaded CV: **{uploaded_file_1.name}** (saved at {file_path_1})")
 
 if uploaded_file_2:
-    file_path_2 = os.path.join(UPLOAD_DIR, uploaded_file_2.name)
+    file_path_2 = os.path.join(UPLOAD_DIR, 'decision.pdf')
     save_uploaded_file(uploaded_file_2, file_path_2)
     st.write(f"✅ Uploaded Reason File: **{uploaded_file_2.name}** (saved at {file_path_2})")
 
