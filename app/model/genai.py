@@ -2,9 +2,9 @@ import aiml
 from openai import OpenAI
 import os
 from dotenv import load_dotenv
-from prompts import *
-
+from utility import *
 # fetch all .env variables
+load_dotenv()
 
 BASE_URL = "https://api.aimlapi.com/v1"
 API_KEY = os.getenv('AIML_API_KEY')
