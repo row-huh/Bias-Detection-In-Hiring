@@ -63,12 +63,12 @@ def main():
     cv = pdf_to_text(cv_path)
     decision = pdf_to_text(decision_path)
 
-
-    print(cv)
-
-    print("*******************")
-
-    print(decision)
+    #TODO
+    # have llama convert the cv into columns
+    # then have llama boil down the decision into 'hired' or 'not hired'
+    # then have the ml predict the outcome
+    # compare the outcomes, if the outcome matches the ml's outcome - then no bias
+    # otherwise, bias detected
 
 
 
