@@ -60,7 +60,7 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-uploaded_file = st.file_uploader("Step 1: Upload Your CV", type="pdf")
+uploaded_resume = st.file_uploader("Step 1: Upload Your CV", type="pdf")
 # Input Section
 st.markdown(
     """
