@@ -1,9 +1,16 @@
 import os
 import streamlit as st
-from model.utility import *
+import sys
 
 
-def upload_and_analyze_files():
+# Add the project root to the Python path
+project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+sys.path.insert(0, project_root)
+
+
+from model.utility import *     # do not change this order
+
+def main():
     # Set up the Streamlit page configuration
     st.set_page_config(
         page_title="Neutral - Bias Detection",
@@ -31,37 +38,52 @@ def upload_and_analyze_files():
     uploaded_file_1 = st.file_uploader("Step 1: Upload Your CV (PDF format only)", type="pdf")
     uploaded_file_2 = st.file_uploader("Step 2: Upload the Company's Reason for Not Hiring (PDF format only)", type="pdf")
 
-    file_path_1, file_path_2 = None, None
+    # Initialize session state variables
+    if 'file_path_1' not in st.session_state:
+        st.session_state.file_path_1 = None
+    if 'file_path_2' not in st.session_state:
+        st.session_state.file_path_2 = None
+    if 'analysis_started' not in st.session_state:
+        st.session_state.analysis_started = False
 
     # Save and Display Uploaded Files
     if uploaded_file_1:
-        file_path_1 = os.path.join(UPLOAD_DIR, 'cv.pdf')
-        with open(file_path_1, "wb") as f:
+        st.session_state.file_path_1 = os.path.join(UPLOAD_DIR, 'cv.pdf')
+        with open(st.session_state.file_path_1, "wb") as f:
             f.write(uploaded_file_1.getbuffer())
-        st.write(f"✅ Uploaded CV: **{uploaded_file_1.name}** (saved at {file_path_1})")
+        st.write(f"✅ Uploaded CV: **{uploaded_file_1.name}** (saved at {st.session_state.file_path_1})")
 
     if uploaded_file_2:
-        file_path_2 = os.path.join(UPLOAD_DIR, 'decision.pdf')
-        with open(file_path_2, "wb") as f:
+        st.session_state.file_path_2 = os.path.join(UPLOAD_DIR, 'decision.pdf')
+        with open(st.session_state.file_path_2, "wb") as f:
             f.write(uploaded_file_2.getbuffer())
-        st.write(f"✅ Uploaded Reason File: **{uploaded_file_2.name}** (saved at {file_path_2})")
+        st.write(f"✅ Uploaded Reason File: **{uploaded_file_2.name}** (saved at {st.session_state.file_path_2})")
 
     # Analysis Button
     if st.button("Start Bias Analysis"):
-        if file_path_1 and file_path_2:
+        # Validate both files are uploaded
+        if st.session_state.file_path_1 and st.session_state.file_path_2:
+            st.session_state.analysis_started = True
             st.success("Files uploaded and saved successfully! Starting analysis...", icon="📊")
             st.info("Analysis is under development. Stay tuned!", icon="🔄")
         else:
             st.error("Please upload both files before proceeding.", icon="⚠")
 
-    return file_path_1, file_path_2
+    # Only return files if analysis has been started and both files are present
+    if st.session_state.analysis_started and st.session_state.file_path_1 and st.session_state.file_path_2:
+        send_to_llama(st.session_state.file_path_1, st.session_state.file_path_2)
+    else:
+        return None, None
 
-def main():
-    # ensure that the user has uploaded files
-    cv_path, decision_path = upload_and_analyze_files()
+def send_to_llama(cv_path, decision_path):
+
+    print("PATHS:",cv_path, decision_path)
 
     cv = pdf_to_text(cv_path)
     decision = pdf_to_text(decision_path)
+
+    print(cv)
+    print(decision)
 
     #TODO
     # have llama convert the cv into columns
