@@ -8,7 +8,8 @@ project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 sys.path.insert(0, project_root)
 
 
-from model.utility import *     # do not change this order
+from model.utility import *     # do not change this 
+from model.genai import *
 
 def main():
     # Set up the Streamlit page configuration
@@ -71,19 +72,32 @@ def main():
 
     # Only return files if analysis has been started and both files are present
     if st.session_state.analysis_started and st.session_state.file_path_1 and st.session_state.file_path_2:
-        send_to_llama(st.session_state.file_path_1, st.session_state.file_path_2)
+        send_to_ai(st.session_state.file_path_1, st.session_state.file_path_2)
     else:
         return None, None
 
-def send_to_llama(cv_path, decision_path):
+
+def send_to_ai(cv_path, decision_path):
 
     print("PATHS:",cv_path, decision_path)
 
     cv = pdf_to_text(cv_path)
     decision = pdf_to_text(decision_path)
 
-    print(cv)
-    print(decision)
+    user_req = f'''Turn the text delimited by triple backticks into the following columns:
+    S.No,Age,Accessibility,EdLevel,Employment,Gender,MentalHealth,MainBranch,YearsCode,YearsCodePro,Country,PreviousSalary,HaveWorkedWith,ComputerSkills,Employed,Age_Category,Is_Employed,Skills_List,Skills_Count,Education_Level,Gender_Category,Previous_Salary,Years_Coding,Years_Professional_Coding
+    ```{cv}```
+    RESPOND IN ONLY CSV VALUE - NO ADDITIONAL TEXT, ONLY THE VALUES IN COMMA SEPARATED FORMAT, DO NOT INCLUDE THE COLUMN NAMES EITHER 
+    '''
+
+    ai = AI(SYSTEM_PROMPT)
+
+    new_columns = ai.generate_response(user_req)
+
+    print(f"NEW COLUMNS: {new_columns}")
+
+
+
 
     #TODO
     # have llama convert the cv into columns
@@ -91,8 +105,6 @@ def send_to_llama(cv_path, decision_path):
     # then have the ml predict the outcome
     # compare the outcomes, if the outcome matches the ml's outcome - then no bias
     # otherwise, bias detected
-
-
 
 
 if __name__ == '__main__':
