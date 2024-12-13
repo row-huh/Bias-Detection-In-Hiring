@@ -1,121 +1,104 @@
-
-@import url('https://fonts.googleapis.com/css2?family=Calligraffitti&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Calligraffitti&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900&display=swap');
 
 * {
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family: "Poppins", sans-serif;
-}
-/* General Body Styling */
-body {
-    background-color: #F4F9FF; /* Light Cool Blue */
-    color: #2E3A59; /* Dark Slate Blue */
-    font-family: 'Arial', sans-serif;
     margin: 0;
-  
-    padding-top: 80px; /* Adjust this based on the navbar height */
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
 }
-.root{
-    --white-color :#fff;
-    --dark-color:#033e3b;
-    --primary-color:#20B2AA;
-    --secondry-color:#b2fffb;
 
-    --font-size-s:0.9rem;
+:root {
+    --white-color: #fff;
+    --dark-color: #033e3b;
+    --primary-color: #20B2AA;
+    --secondary-color: #b2fffb;
+
+    --font-size-s: 0.9rem;
     --font-size-n: 1rem;
     --font-size-m: 1.12rem;
     --font-size-l: 1.5rem;
     --font-size-xl: 2rem;
-    --font-size-xxl: 2.3rem;
-    
-    
+
+    --font-weight-normal: 400;
+    --font-weight-medium: 500;
+    --font-weight-bold: 700;
+
+    --border-radius-s: 8px;
+    --border-radius-m: 30px;
 }
 
-.navbar{
-    background:rgb(0, 255, 225);
+body {
+    background-color: var(--white-color);
+    color: var(--dark-color);
+    padding-top: 80px;
+}
+
+.navbar {
+    background: var(--primary-color);
     position: fixed;
     top: 0;
     left: 0;
-    width: 85%;
-    margin: auto;
-    padding: 35px 0; /* Padding for the navbar */
-    z-index: 1000; /* Ensure it stays on top of other content */
+    width: 100%;
+    padding: 10px 20px;
+    z-index: 1000;
     display: flex;
-    justify-content: space-between; /* Space between left and right sections */
+    justify-content: space-between;
     align-items: center;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Optional shadow for visual effect */
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.navbar .left-side {
+.navbar .nav-menu {
     display: flex;
-    align-items: center;
+    gap: 20px;
 }
 
-.navbar .left-side a {
-    color: white;
+.navbar .nav-menu a {
+    color: var(--white-color);
     text-decoration: none;
-    margin-right: 20px; /* Spacing between links */
-    font-size: 18px;
+    font-size: var(--font-size-m);
+    font-weight: var(--font-weight-medium);
 }
 
-.navbar .right-side {
-    margin-left: auto; /* Pushes the buttons to the right */
-    display: flex;
-    align-items: center;
+.navbar .nav-menu a:hover {
+    text-decoration: underline;
 }
 
 .navbar .right-side button {
-    background-color: #6C8EBF; /* Light Blue */
-    color: white;
+    background-color: #6C8EBF;
+    color: var(--white-color);
     border: none;
-    border-radius: 5px;
+    border-radius: var(--border-radius-s);
     padding: 10px 20px;
-    margin-left: 10px; /* Spacing between buttons */
+    margin-left: 10px;
     cursor: pointer;
+    font-family: inherit;
+    transition: background-color 0.3s ease;
 }
 
 .navbar .right-side button:hover {
-    background-color: #4F70A0; /* Darker Blue */
+    background-color: #033e3b;
 }
 
-
-/* Content Section Styling */
 .content-section {
-    margin-top: 100px; /* Offset the navbar */
+    margin-top: 120px;
     text-align: center;
-    color: #2E3A59; /* Dark Slate Blue */
 }
 
-/* Footer Styling */
 .footer {
+    margin-top: 50px;
     text-align: center;
-    margin-top: 2em;
-    color: #8E8E93; /* Soft Gray */
+    color: var(--dark-color);
 }
 
-/* Custom Streamlit Button and Input Styling */
 .stButton > button {
-    background-color: #4C6A92;
-    color: white;
-    border-radius: 5px;
+    background-color: var(--primary-color);
+    color: var(--white-color);
+    border-radius: var(--border-radius-s);
     padding: 0.5em 1em;
+    font-family: inherit;
+    transition: background-color 0.3s ease;
 }
 
 .stButton > button:hover {
-    background-color: #6C8EBF;
-}
-
-.stAlert {
-    background-color: #FF8E7E; /* Muted Coral */
-    border-radius: 5px;
-}
-
-.stTextInput > div > input {
-    border: 1px solid #8E8E93; /* Neutral Gray */
-    border-radius: 5px;
-}
-
-.sidebar .sidebar-content {
-    background-color: #8E8E93; /* Neutral Gray */
+    background-color: #033e3b;
 }

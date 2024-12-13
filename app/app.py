@@ -1,3 +1,4 @@
+import os
 import streamlit as st
 
 # Set up the Streamlit page configuration
@@ -8,91 +9,45 @@ st.set_page_config(
     initial_sidebar_state="collapsed",
 )
 
-# Link the external CSS file
-st.markdown(
-    """
-    <link rel="stylesheet" type="text/css" href="styles.css">
-    """,
-    unsafe_allow_html=True,
-)
+# Load external CSS
+with open("style.css") as css_file:
+    st.markdown(f"<style>{css_file.read()}</style>", unsafe_allow_html=True)
 
-# Navigation Bar: Left and Right Aligned Options
-st.markdown(
-    """
-    <header>
-    <div class="navbar">
-        <!-- Left-side Navigation Links -->
-        <div class="left-side">
-            <ul class="nav-menu">
-                <li class="nav-item">
-                    <a href="#" class="nav-link">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link">About</a>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link">Services</a>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link">Resume</a>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link">Cover Letters</a>
-                </li>
-            </ul>
-        </div></header>
-    """,
-    unsafe_allow_html=True,
-)
+# Load external HTML template
+with open("template.html") as html_file:
+    st.markdown(html_file.read(), unsafe_allow_html=True)
 
+# Directory where files will be saved
+UPLOAD_DIR = "uploads"
 
-# Header Section
-st.markdown(
-    """
-    <div class="content-section">
-        <center><h1 style="color: #4C6A92;">Neutral</h1></center>
-        <center><h3 style="color: #6C8EBF;">Detecting Biases in Hiring </h3></center>
-    </div>
-    """,
-    unsafe_allow_html=True,
-)
+# Create the upload directory if it doesn't exist
+if not os.path.exists(UPLOAD_DIR):
+    os.makedirs(UPLOAD_DIR)
 
-# Input Section
-st.markdown(
-    """
-    <div class="content-section">
-        <h4 style="color: #4C6A92;">Upload Hiring Data:</h4>
-        <p style="color: #6C8EBF;">Upload a CSV file containing candidate information and hiring decisions to analyze for potential biases.</p>
-    </div>
-    """,
-    unsafe_allow_html=True,
-)
+# File Upload Section
+uploaded_file_1 = st.file_uploader("Step 1: Upload Your CV (PDF format only)", type="pdf")
+uploaded_file_2 = st.file_uploader("Step 2: Upload the Company's Reason for Not Hiring (PDF format only)", type="pdf")
 
-uploaded_file_1 = st.file_uploader("Step 1: Upload Your CV", type="pdf")
-uploaded_file_2 = st.file_uploader("Step 2: Reason from Company on not being hired", type="pdf")
+# Function to save uploaded file
+def save_uploaded_file(uploaded_file, file_path):
+    with open(file_path, "wb") as f:
+        f.write(uploaded_file.getbuffer())
 
-# Display uploaded files
-if uploaded_file_1 is not None:
-    st.image(uploaded_file_1, caption="Uploaded CV", use_column_width=True)
+# Display File Uploads and Save them
+if uploaded_file_1:
+    file_path_1 = os.path.join(UPLOAD_DIR, uploaded_file_1.name)
+    save_uploaded_file(uploaded_file_1, file_path_1)
+    st.write(f"✅ Uploaded CV: **{uploaded_file_1.name}** (saved at {file_path_1})")
 
-if uploaded_file_2 is not None:
-    st.image(uploaded_file_2, caption="Uploaded Reason File", use_column_width=True)
+if uploaded_file_2:
+    file_path_2 = os.path.join(UPLOAD_DIR, uploaded_file_2.name)
+    save_uploaded_file(uploaded_file_2, file_path_2)
+    st.write(f"✅ Uploaded Reason File: **{uploaded_file_2.name}** (saved at {file_path_2})")
 
 # Analysis Button
-if st.button("Analyze for Biases"):
-    if uploaded_file_1 is not None and uploaded_file_2 is not None:
-        st.success("Files uploaded successfully! Starting analysis...", icon="📊")
-        # Placeholder for actual analysis functionality
+if st.button("Start Bias Analysis"):
+    if uploaded_file_1 and uploaded_file_2:
+        st.success("Files uploaded and saved successfully! Starting analysis...", icon="📊")
         st.info("Analysis is under development. Stay tuned!", icon="🔄")
     else:
         st.error("Please upload both files before proceeding.", icon="⚠")
-
-# Footer Section
-st.markdown(
-    """
-    <div class="footer">
-        <center><p>&copy; 2024 Neutral. All rights reserved.</p></center>
-    </div>
-    """,
-    unsafe_allow_html=True,
-)
