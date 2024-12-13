@@ -10,11 +10,11 @@ st.set_page_config(
 )
 
 # Load external CSS
-with open("style.css") as css_file:
+with open("static/style.css") as css_file:
     st.markdown(f"<style>{css_file.read()}</style>", unsafe_allow_html=True)
 
 # Load external HTML template
-with open("template.html") as html_file:
+with open("templates/template.html") as html_file:
     st.markdown(html_file.read(), unsafe_allow_html=True)
 
 # Directory where files will be saved

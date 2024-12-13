@@ -2,6 +2,9 @@
 
 import PyPDF2
 
+
+SYSTEM_PROMPT = 'say hello to everything'
+
 def pdf_to_text(path):
     """
     Opens a PDF file and returns its text content.
