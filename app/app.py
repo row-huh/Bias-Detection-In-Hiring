@@ -1,7 +1,7 @@
 import os
 import streamlit as st
 import sys
-
+from lastpage import results
 
 # Add the project root to the Python path
 project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
@@ -73,7 +73,8 @@ def main():
 
     # Only return files if analysis has been started and both files are present
     if st.session_state.analysis_started and st.session_state.file_path_1 and st.session_state.file_path_2:
-        send_to_ai(st.session_state.file_path_1, st.session_state.file_path_2)
+        document = send_to_ai(st.session_state.file_path_1, st.session_state.file_path_2)
+        results(document)
     else:
         return None, None
 
@@ -103,12 +104,8 @@ def send_to_ai(cv_path, decision_path):
 """
     document = ai.generate_response(new_prompt)
     print(document)
-    #TODO
-    # have llama convert the cv into columns
-    # then have llama boil down the decision into 'hired' or 'not hired'
-    # then have the ml predict the outcome
-    # compare the outcomes, if the outcome matches the ml's outcome - then no bias
-    # otherwise, bias detected
+
+    return document
 
 if __name__ == '__main__':
     main()

@@ -24,8 +24,8 @@ UPLOAD_DIR = "uploads"
 if not os.path.exists(UPLOAD_DIR):
     os.makedirs(UPLOAD_DIR)
 
-
-def main():
+# renamed main to results to ensure it's easier to call it from app.py
+def results():
     # Page Configuration
     st.set_page_config(
         page_title="Bias Analysis Results",
@@ -84,7 +84,7 @@ def main():
         st.error("No files detected! Please upload your CV and company's reason first from the landing page.")
 
 
-# Example bias analysis function
+
 def analyze_bias(cv_text, decision_text):
     """
     Analyze bias in CV and company's decision text based on predefined keywords.
@@ -108,3 +108,13 @@ def analyze_bias(cv_text, decision_text):
 
 if __name__ == "__main__":
     main()
+
+
+
+#TODO
+# only implement one function
+# it takes one document - call the document an 'analysis'
+# it only prints the analysis on streamlit with a heading like 'Neutral's Analysis Result'
+# It also has a button with the print logo upon clicking which the document is downloaded on the user's pc in a pdf format
+# it is only one function - helper functions may be used to improve readability but the main logic must exist in only one function
+# ensure that the newly generated streamlit page follows the existing ui (insert existing ui picture)
