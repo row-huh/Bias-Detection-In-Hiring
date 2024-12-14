@@ -11,12 +11,6 @@ sys.path.insert(0, project_root)
 from model.utility import *     # do not change this 
 from model.genai import *
 
-<<<<<<< HEAD
-# Create the upload directory if it doesn't exist
-if not os.path.exists(UPLOAD_DIR):
-
-    os.makedirs(UPLOAD_DIR)
-=======
 def main():
     # Set up the Streamlit page configuration
     st.set_page_config(
@@ -25,7 +19,6 @@ def main():
         layout="wide",
         initial_sidebar_state="collapsed",
     )
->>>>>>> ce43e1b3f48aad49625bf6fada3159d6bb69a260
 
     # Load external CSS
     with open("static/style.css") as css_file:
@@ -103,7 +96,22 @@ def send_to_ai(cv_path, decision_path):
 
     print(f"NEW COLUMNS: {new_columns}")
 
+    # ml_decision = get_ml_decision(new_columns)
+    ml_decision = 'BIASED'
 
+    new_prompt = f""" 
+    You know the following things
+    CV (delimited by triple backticks) : ```{cv}```,
+    Decision (delimited by double backticks): ``{decision}``,
+    You also have a prediction from an expert machine learning system that determined the following decision as {ml_decision}
+    
+    Now write 500 words explaining why the following decision for the following candidate (the one whose cv is given) might be biased or might be a justfied decision.
+    Remember to always trust the machine learning's decision - it's been trained for this purpose and is more accurate
+"""
+
+    document = ai.generate_response(new_prompt)
+
+    print(document)
 
 
     #TODO
