@@ -103,25 +103,3 @@ class AI:
             # Reset to initial state
             self.messages = [self.messages[0]]
 
-# Example usage
-def main():
-    # Your system prompt (replace with actual prompt)
-    SYSTEM_PROMPT = "You are a helpful AI assistant designed to provide accurate and concise information."
-    
-    # Create chatbot instance
-    chatbot = AIMLChatbot(SYSTEM_PROMPT)
-    
-    # Example interactions
-    response1 = chatbot.generate_response("Tell me about San Francisco")
-    print("Response 1:", response1)
-    
-    response2 = chatbot.generate_response("What are some interesting historical facts about the city?")
-    print("Response 2:", response2)
-    
-    # If you want to see full conversation history
-    print("\nConversation History:")
-    for message in chatbot.get_conversation_history():
-        print(f"{message['role'].upper()}: {message['content']}")
-
-if __name__ == "__main__":
-    main()

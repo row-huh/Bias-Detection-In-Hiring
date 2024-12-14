@@ -73,8 +73,8 @@ def main():
 
     # Only return files if analysis has been started and both files are present
     if st.session_state.analysis_started and st.session_state.file_path_1 and st.session_state.file_path_2:
-        document = send_to_ai(st.session_state.file_path_1, st.session_state.file_path_2)
-        results(document)
+        analysis = send_to_ai(st.session_state.file_path_1, st.session_state.file_path_2)
+        final_analysis(analysis) # function to be implemented
     else:
         return None, None
 

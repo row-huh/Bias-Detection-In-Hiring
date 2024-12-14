@@ -25,7 +25,7 @@ if not os.path.exists(UPLOAD_DIR):
     os.makedirs(UPLOAD_DIR)
 
 # renamed main to results to ensure it's easier to call it from app.py
-def results():
+def main():
     # Page Configuration
     st.set_page_config(
         page_title="Bias Analysis Results",
