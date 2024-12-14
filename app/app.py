@@ -1,54 +1,118 @@
 import os
 import streamlit as st
+import sys
 
-# Set up the Streamlit page configuration
-st.set_page_config(
-    page_title="Neutral - Bias Detection",
-    page_icon="🔐",
-    layout="wide",
-    initial_sidebar_state="collapsed",
-)
 
-# Load external CSS
-with open("style.css") as css_file:
-    st.markdown(f"<style>{css_file.read()}</style>", unsafe_allow_html=True)
+# Add the project root to the Python path
+project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+sys.path.insert(0, project_root)
 
-# Load external HTML template
-with open("template.html") as html_file:
-    st.markdown(html_file.read(), unsafe_allow_html=True)
 
-# Directory where files will be saved
-UPLOAD_DIR = "uploads"
+from model.utility import *     # do not change this 
+from model.genai import *
 
+<<<<<<< HEAD
 # Create the upload directory if it doesn't exist
 if not os.path.exists(UPLOAD_DIR):
 
     os.makedirs(UPLOAD_DIR)
+=======
+def main():
+    # Set up the Streamlit page configuration
+    st.set_page_config(
+        page_title="Neutral - Bias Detection",
+        page_icon="🔐",
+        layout="wide",
+        initial_sidebar_state="collapsed",
+    )
+>>>>>>> ce43e1b3f48aad49625bf6fada3159d6bb69a260
 
-# File Upload Section
-uploaded_file_1 = st.file_uploader("Step 1: Upload Your CV (PDF format only)", type="pdf")
-uploaded_file_2 = st.file_uploader("Step 2: Upload the Company's Reason for Not Hiring (PDF format only)", type="pdf")
+    # Load external CSS
+    with open("static/style.css") as css_file:
+        st.markdown(f"<style>{css_file.read()}</style>", unsafe_allow_html=True)
 
-# Function to save uploaded file
-def save_uploaded_file(uploaded_file, file_path):
-    with open(file_path, "wb") as f:
-        f.write(uploaded_file.getbuffer())
+    # Load external HTML template
+    with open("templates/template.html") as html_file:
+        st.markdown(html_file.read(), unsafe_allow_html=True)
 
-# Display File Uploads and Save them
-if uploaded_file_1:
-    file_path_1 = os.path.join(UPLOAD_DIR, uploaded_file_1.name)
-    save_uploaded_file(uploaded_file_1, file_path_1)
-    st.write(f"✅ Uploaded CV: **{uploaded_file_1.name}** (saved at {file_path_1})")
+    # Directory where files will be saved
+    UPLOAD_DIR = "uploads"
 
-if uploaded_file_2:
-    file_path_2 = os.path.join(UPLOAD_DIR, uploaded_file_2.name)
-    save_uploaded_file(uploaded_file_2, file_path_2)
-    st.write(f"✅ Uploaded Reason File: **{uploaded_file_2.name}** (saved at {file_path_2})")
+    # Create the upload directory if it doesn't exist
+    if not os.path.exists(UPLOAD_DIR):
+        os.makedirs(UPLOAD_DIR)
 
-# Analysis Button
-if st.button("Start Bias Analysis"):
-    if uploaded_file_1 and uploaded_file_2:
-        st.success("Files uploaded and saved successfully! Starting analysis...", icon="📊")
-        st.info("Analysis is under development. Stay tuned!", icon="🔄")
+    # File Upload Section
+    uploaded_file_1 = st.file_uploader("Step 1: Upload Your CV (PDF format only)", type="pdf")
+    uploaded_file_2 = st.file_uploader("Step 2: Upload the Company's Reason for Not Hiring (PDF format only)", type="pdf")
+
+    # Initialize session state variables
+    if 'file_path_1' not in st.session_state:
+        st.session_state.file_path_1 = None
+    if 'file_path_2' not in st.session_state:
+        st.session_state.file_path_2 = None
+    if 'analysis_started' not in st.session_state:
+        st.session_state.analysis_started = False
+
+    # Save and Display Uploaded Files
+    if uploaded_file_1:
+        st.session_state.file_path_1 = os.path.join(UPLOAD_DIR, 'cv.pdf')
+        with open(st.session_state.file_path_1, "wb") as f:
+            f.write(uploaded_file_1.getbuffer())
+        st.write(f"✅ Uploaded CV: **{uploaded_file_1.name}** (saved at {st.session_state.file_path_1})")
+
+    if uploaded_file_2:
+        st.session_state.file_path_2 = os.path.join(UPLOAD_DIR, 'decision.pdf')
+        with open(st.session_state.file_path_2, "wb") as f:
+            f.write(uploaded_file_2.getbuffer())
+        st.write(f"✅ Uploaded Reason File: **{uploaded_file_2.name}** (saved at {st.session_state.file_path_2})")
+
+    # Analysis Button
+    if st.button("Start Bias Analysis"):
+        # Validate both files are uploaded
+        if st.session_state.file_path_1 and st.session_state.file_path_2:
+            st.session_state.analysis_started = True
+            st.success("Files uploaded and saved successfully! Starting analysis...", icon="📊")
+            st.info("Analysis is under development. Stay tuned!", icon="🔄")
+        else:
+            st.error("Please upload both files before proceeding.", icon="⚠")
+
+    # Only return files if analysis has been started and both files are present
+    if st.session_state.analysis_started and st.session_state.file_path_1 and st.session_state.file_path_2:
+        send_to_ai(st.session_state.file_path_1, st.session_state.file_path_2)
     else:
-        st.error("Please upload both files before proceeding.", icon="⚠")
+        return None, None
+
+
+def send_to_ai(cv_path, decision_path):
+
+    print("PATHS:",cv_path, decision_path)
+
+    cv = pdf_to_text(cv_path)
+    decision = pdf_to_text(decision_path)
+
+    user_req = f'''Turn the text delimited by triple backticks into the following columns:
+    S.No,Age,Accessibility,EdLevel,Employment,Gender,MentalHealth,MainBranch,YearsCode,YearsCodePro,Country,PreviousSalary,HaveWorkedWith,ComputerSkills,Employed,Age_Category,Is_Employed,Skills_List,Skills_Count,Education_Level,Gender_Category,Previous_Salary,Years_Coding,Years_Professional_Coding
+    ```{cv}```
+    RESPOND IN ONLY CSV VALUE - NO ADDITIONAL TEXT, ONLY THE VALUES IN COMMA SEPARATED FORMAT, DO NOT INCLUDE THE COLUMN NAMES EITHER 
+    '''
+
+    ai = AI(SYSTEM_PROMPT)
+
+    new_columns = ai.generate_response(user_req)
+
+    print(f"NEW COLUMNS: {new_columns}")
+
+
+
+
+    #TODO
+    # have llama convert the cv into columns
+    # then have llama boil down the decision into 'hired' or 'not hired'
+    # then have the ml predict the outcome
+    # compare the outcomes, if the outcome matches the ml's outcome - then no bias
+    # otherwise, bias detected
+
+
+if __name__ == '__main__':
+    main()
