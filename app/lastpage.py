@@ -1,19 +1,21 @@
 import os
 import streamlit as st
 import sys
-from model.utility import *  # DO NOT change this
-from model.genai import *
+
   # Example helper function for bias analysis
 import requests
 
 # Ensure the 'requests' module is available
 print(f"Requests is available: {hasattr(requests, 'get')}")
 
-# ... (Rest of your code remains unchanged)
 
 # Add the project root to the Python path
 project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 sys.path.insert(0, project_root)
+
+
+from model.utility import *  # DO NOT change this
+from model.genai import *
 
 # Constants
 UPLOAD_DIR = "uploads"

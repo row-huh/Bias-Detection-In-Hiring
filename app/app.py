@@ -11,6 +11,7 @@ sys.path.insert(0, project_root)
 from model.utility import *     # do not change this 
 from model.genai import *
 
+
 def main():
     # Set up the Streamlit page configuration
     st.set_page_config(
