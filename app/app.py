@@ -22,6 +22,7 @@ UPLOAD_DIR = "uploads"
 
 # Create the upload directory if it doesn't exist
 if not os.path.exists(UPLOAD_DIR):
+
     os.makedirs(UPLOAD_DIR)
 
 # File Upload Section
