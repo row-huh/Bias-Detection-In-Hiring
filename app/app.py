@@ -13,7 +13,6 @@ from model.genai import *  # Make sure this import works and provides necessary 
 # Directory where files will be saved
 UPLOAD_DIR = "uploads"
 
-<<<<<<< HEAD
 # Create the upload directory if it doesn't exist
 if not os.path.exists(UPLOAD_DIR):
     os.makedirs(UPLOAD_DIR)
@@ -63,8 +62,6 @@ def send_to_ai(cv_path, decision_path):
     # You can now process the bias detection based on this AI response
 
 # Main function to control the logic
-=======
->>>>>>> 03722b9b2f9ccf183ab14f9704286cea96f6ed53
 def main():
     # Set up the Streamlit page configuration
     st.set_page_config(
@@ -112,54 +109,5 @@ def main():
     else:
         return None, None
 
-<<<<<<< HEAD
-=======
-
-def send_to_ai(cv_path, decision_path):
-
-    print("PATHS:",cv_path, decision_path)
-
-    cv = pdf_to_text(cv_path)
-    decision = pdf_to_text(decision_path)
-
-    user_req = f'''Turn the text delimited by triple backticks into the following columns:
-    S.No,Age,Accessibility,EdLevel,Employment,Gender,MentalHealth,MainBranch,YearsCode,YearsCodePro,Country,PreviousSalary,HaveWorkedWith,ComputerSkills,Employed,Age_Category,Is_Employed,Skills_List,Skills_Count,Education_Level,Gender_Category,Previous_Salary,Years_Coding,Years_Professional_Coding
-    ```{cv}```
-    RESPOND IN ONLY CSV VALUE - NO ADDITIONAL TEXT, ONLY THE VALUES IN COMMA SEPARATED FORMAT, DO NOT INCLUDE THE COLUMN NAMES EITHER 
-    '''
-
-    ai = AI(SYSTEM_PROMPT)
-
-    new_columns = ai.generate_response(user_req)
-
-    print(f"NEW COLUMNS: {new_columns}")
-
-    # ml_decision = get_ml_decision(new_columns)
-    ml_decision = 'BIASED'
-
-    new_prompt = f""" 
-    You know the following things
-    CV (delimited by triple backticks) : ```{cv}```,
-    Decision (delimited by double backticks): ``{decision}``,
-    You also have a prediction from an expert machine learning system that determined the following decision as {ml_decision}
-    
-    Now write 500 words explaining why the following decision for the following candidate (the one whose cv is given) might be biased or might be a justfied decision.
-    Remember to always trust the machine learning's decision - it's been trained for this purpose and is more accurate
-"""
-
-    document = ai.generate_response(new_prompt)
-
-    print(document)
-
-
-    #TODO
-    # have llama convert the cv into columns
-    # then have llama boil down the decision into 'hired' or 'not hired'
-    # then have the ml predict the outcome
-    # compare the outcomes, if the outcome matches the ml's outcome - then no bias
-    # otherwise, bias detected
-
-
->>>>>>> 03722b9b2f9ccf183ab14f9704286cea96f6ed53
 if __name__ == '__main__':
     main()
