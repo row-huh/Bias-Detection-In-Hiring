@@ -38,17 +38,17 @@ header .navbar {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 50px;
+    /* padding: 5px 10px;; */
 }
 
 .navbar {
     background: var(--primary-color);
     position: fixed;
-    top: 0;
+    top: 50px;
     left: 0;
     width: 100%;
-    padding: 10px 18px;
-    z-index: 1000;
+    /* padding: 10px 18px; */
+    /* z-index: 1000; */
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -68,6 +68,8 @@ header .navbar {
 }
 
 .navbar .nav-menu {
+    list-style: none; /* Removes bullet points */
+
     display: flex;
     gap: 15px;
 }
@@ -83,6 +85,7 @@ header .navbar {
 }
 .navbar .nav-menu .nav-link {
     padding : 10px 18px;
+    text-decoration: none; /* Removes underline from links */
     color: var(--white-color);
     font-size: var(--font-radius-m);
     border-radius: var(--border-radius-m);
