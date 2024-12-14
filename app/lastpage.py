@@ -1,113 +1,93 @@
-import os
 import streamlit as st
-import sys
+from PyPDF2 import PdfWriter
+from io import BytesIO
 
-  # Example helper function for bias analysis
-import requests
+def final_analysis(analysis: str):
+    """
+    Displays the given analysis on a Streamlit page with the heading 'Neutral's Analysis Result' 
+    and provides a button to download the analysis as a PDF.
 
-# Ensure the 'requests' module is available
-print(f"Requests is available: {hasattr(requests, 'get')}")
+    Parameters:
+        analysis (str): The analysis text to display and download.
+    """
 
-
-# Add the project root to the Python path
-project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
-sys.path.insert(0, project_root)
-
-
-from model.utility import *  # DO NOT change this
-from model.genai import *
-
-# Constants
-UPLOAD_DIR = "uploads"
-
-# Ensure upload directory exists
-if not os.path.exists(UPLOAD_DIR):
-    os.makedirs(UPLOAD_DIR)
-
-# renamed main to results to ensure it's easier to call it from app.py
-def main():
-    # Page Configuration
-    st.set_page_config(
-        page_title="Bias Analysis Results",
-        page_icon="📊",
-        layout="wide",
-        initial_sidebar_state="collapsed",
+    # Top header bar
+    st.markdown(
+        """
+        <style>
+            .header-bar {
+                background-color: #008080; /* Teal color matching existing UI */
+                padding: 10px;
+                color: white;
+                text-align: center;
+                font-size: 24px;
+                font-weight: bold;
+            }
+            .download-button {
+                background-color: #00cc66; /* Green button color matching existing UI */
+                color: white;
+                font-size: 16px;
+                padding: 10px 20px;
+                border: none;
+                border-radius: 5px;
+            }
+            .download-button:hover {
+                background-color: #00994d; /* Darker green for hover effect */
+            }
+        </style>
+        <div class="header-bar">Neutral</div>
+        """,
+        unsafe_allow_html=True,
     )
 
-    st.title("Bias Detection Results")
-    st.write("Here are the results of your bias analysis.")
+    # Page heading
+    st.title("Detecting Biases in Hiring")
 
-    # Validate that the session contains uploaded files
-    if 'file_path_1' in st.session_state and 'file_path_2' in st.session_state:
-        cv_path = st.session_state.file_path_1
-        decision_path = st.session_state.file_path_2
+    # Subheading for the analysis result
+    st.header("Neutral's Analysis Result")
 
-        # Extract text from PDFs
-        cv_text = pdf_to_text(cv_path)
-        decision_text = pdf_to_text(decision_path)
+    # Display the analysis text in a container
+    st.markdown(
+        f"""
+        <div style="background-color: #222; color: #ddd; padding: 15px; border-radius: 5px;">
+            <p style="font-size: 16px;">{analysis}</p>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
 
-        # Display extracted content previews
-        st.subheader("Uploaded CV Content Preview:")
-        st.text_area("CV Text", value=cv_text[:500], height=200)
+    # Helper function to generate a PDF
+    def generate_pdf(content):
+        pdf_writer = PdfWriter()
+        pdf_stream = BytesIO()
 
-        st.subheader("Company's Decision Content Preview:")
-        st.text_area("Company's Reason Text", value=decision_text[:500], height=200)
+        # Create a simple text-based PDF
+        pdf_writer.add_blank_page(width=72 * 8.5, height=72 * 11)  # Letter size
+        pdf_writer.add_text(content, x=50, y=700)  # Adding text to the page
 
-        # Perform bias analysis
-        st.subheader("Bias Analysis Results")
-        cv_bias_score, decision_bias_score = analyze_bias(cv_text, decision_text)
+        pdf_writer.write(pdf_stream)
+        pdf_stream.seek(0)
+        return pdf_stream
 
-        # Display bias scores
-        st.write(f"📄 **CV Bias Score:** {cv_bias_score}%")
-        st.write(f"📑 **Company's Reason Bias Score:** {decision_bias_score}%")
+    # Button to download the analysis as PDF
+    st.markdown(
+        """
+        <form action="#" method="get">
+            <button class="download-button" type="button" onclick="window.location.href='/download'">📝 Download as PDF</button>
+        </form>
+        """,
+        unsafe_allow_html=True,
+    )
 
-        # Interpretation of bias scores
-        if cv_bias_score > 60:
-            st.warning("⚠️ The CV contains significant biased language.")
-        elif cv_bias_score > 40:
-            st.info("The CV contains some biased elements but is relatively balanced.")
-        else:
-            st.success("✅ The CV appears neutral and unbiased.")
-
-        if decision_bias_score > 60:
-            st.warning("⚠️ The company's reason contains significant biased language.")
-        elif decision_bias_score > 40:
-            st.info("The company's reason contains some biased elements but is relatively balanced.")
-        else:
-            st.success("✅ The company's reason appears neutral and unbiased.")
-
-        # Visual progress bars
-        st.progress(cv_bias_score / 100)
-        st.progress(decision_bias_score / 100)
-
-    else:
-        st.error("No files detected! Please upload your CV and company's reason first from the landing page.")
-
-
-
-def analyze_bias(cv_text, decision_text):
-    """
-    Analyze bias in CV and company's decision text based on predefined keywords.
-    Returns bias scores for both inputs.
-    """
-    biased_keywords = ['discrimination', 'prejudice', 'biased', 'favoritism', 'stereotype']
-    neutral_keywords = ['fairness', 'neutral', 'unbiased', 'impartial', 'equal']
-
-    def calculate_score(text):
-        biased_count = sum(1 for word in biased_keywords if word in text.lower())
-        neutral_count = sum(1 for word in neutral_keywords if word in text.lower())
-        total = biased_count + neutral_count
-        if total == 0:
-            return 50  # Default score if no keywords are found
-        return (biased_count / total) * 100
-
-    cv_score = calculate_score(cv_text)
-    decision_score = calculate_score(decision_text)
-    return round(cv_score, 2), round(decision_score, 2)
-
-
-if __name__ == "__main__":
-    main()
+    # Generate PDF when the button is clicked
+    if st.button("Generate PDF"):
+        pdf_stream = generate_pdf(analysis)
+        st.download_button(
+            label="Download PDF",
+            data=pdf_stream.getvalue(),
+            file_name="analysis_result.pdf",
+            mime="application/pdf",
+        )
 
 
 

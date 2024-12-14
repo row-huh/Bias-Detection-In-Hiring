@@ -1,7 +1,7 @@
 import os
 import streamlit as st
 import sys
-from lastpage import results
+from lastpage import final_analysis
 
 # Add the project root to the Python path
 project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
