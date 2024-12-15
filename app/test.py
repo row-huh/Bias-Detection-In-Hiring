@@ -41,7 +41,7 @@ def first_page():
         st.markdown(f"<style>{css_file.read()}</style>", unsafe_allow_html=True)
 
     # Load external HTML template
-    with open("templates/template.html") as html_file:
+    with open("app/templates/template.html") as html_file:
         st.markdown(html_file.read(), unsafe_allow_html=True)
 
 
