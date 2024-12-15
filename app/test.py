@@ -37,7 +37,7 @@ def first_page():
     st.title("File Upload Page")
     
     # Load external CSS
-    with open("static/style.css") as css_file:
+    with open("app/static/style.css") as css_file:
         st.markdown(f"<style>{css_file.read()}</style>", unsafe_allow_html=True)
 
     # Load external HTML template
