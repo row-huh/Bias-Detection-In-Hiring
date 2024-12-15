@@ -12,6 +12,7 @@
     --dark-color: #033e3b;
     --primary-color: #298783;
     --secondary-color:#eaeff1 ;
+    --text-color:rgb(27, 27, 27) ;
 
 
     --font-size-s: 0.9rem;
@@ -29,7 +30,7 @@
 }
 
 body {
-    background-color: var(--white-color);
+    /* background-color: var(--white-color); */
     color: var(--dark-color);
     padding-top: 10px;
 }
@@ -40,12 +41,18 @@ header .navbar {
     justify-content: space-between;
     /* padding: 5px 10px;; */
 }
-
+h1{
+    font-weight: 100 !important;
+}
+a{
+    text-decoration: none !important;
+}
 .navbar {
-    background: var(--primary-color);
-    position: fixed;
+    background: #1d232e;
+    border-radius: 20px;
+    /* position: fixed;
     top: 50px;
-    left: 0;
+    left: 0; */
     width: 100%;
     /* padding: 10px 18px; */
     /* z-index: 1000; */
@@ -58,6 +65,7 @@ header .navbar {
 .navbar .nav-logo .logo-text {
     color: var(--white-color);
     font-size: var(--font-size-xl);
+    text-decoration: none !important;
     font-weight: var(--font-weight-semibold);
 
 }
@@ -93,12 +101,12 @@ header .navbar {
 }
 
 .navbar .nav-menu .nav-link:hover{
-    background: var(--secondary-color);
+    /* background: var(--secondary-color); */
     color:var(--primary-color)
 
 }
 .navbar .nav-menu .nav-item a:hover {
-    background-color: var(--dark-color);
+    background-color: #293347;
     color: var(--white-color);
 }
 
@@ -117,7 +125,42 @@ header .navbar {
 .navbar .right-side button:hover {
     background-color: var(--dark-color);
 }
-
+/* HERO SECTION */
+.hero-section{
+    background-image: url('../image/gradient.png');
+    min-height: 40vh;
+    margin-top: 50px;
+    background-repeat: no-repeat;
+    background-size: cover;
+    color: rgb(45, 0, 62);
+    font-weight: 100;
+    /* background-position: co; */
+}
+.title{
+    font-weight: 200;
+}
+/* TEST */
+.st-emotion-cache-13k62yr {
+    position: absolute;
+    background-image: linear-gradient(180deg, #F4F1E9, #FDD5E1, #EFB7B9, #F4EFE8 )  ;
+    color: rgb(250, 250, 250);
+    inset: 0px;
+    color-scheme: dark;
+    overflow: hidden;
+}
+.st-emotion-cache-14553y9 p, .st-emotion-cache-14553y9 ol, .st-emotion-cache-14553y9 ul, .st-emotion-cache-14553y9 dl, .st-emotion-cache-14553y9 li {
+    font-size: inherit;
+    color: black;
+}
+.landing-div{
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;    
+}
+.landing-img img{
+    width: 500px;
+    height: 500px;
+}
 .content-section {
     margin-top: 100px;
     text-align: center;
@@ -145,7 +188,7 @@ header .navbar {
     background: var(--secondary-color);
 }
 .stButton > button {
-    background-color: var(--primary-color);
+    background-color: #191f2a;
     color: var(--white-color);
     border-radius: var(--border-radius-s);
     padding: 0.5em 1em;
@@ -155,6 +198,7 @@ header .navbar {
 }
 
 .stButton > button:hover {
-    background-color: var(--dark-color);
+    background-color: #273041;
+    color: white;
 }
 

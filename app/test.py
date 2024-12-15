@@ -34,7 +34,7 @@ def first_page():
         initial_sidebar_state="collapsed",
     )
 
-    st.title("File Upload Page")
+    # st.title("File Upload Page")
     
     # Load external CSS
     with open("static/style.css") as css_file:
@@ -64,8 +64,6 @@ def first_page():
         st.rerun()
     
     return file_to_text(cv_file), file_to_text(decision_file)
-
-
 
 def create_analysis_pdf(analysis):
     """
