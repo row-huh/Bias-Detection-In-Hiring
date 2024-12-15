@@ -36,6 +36,15 @@ def first_page():
 
     st.title("File Upload Page")
     
+    # Load external CSS
+    with open("static/style.css") as css_file:
+        st.markdown(f"<style>{css_file.read()}</style>", unsafe_allow_html=True)
+
+    # Load external HTML template
+    with open("templates/template.html") as html_file:
+        st.markdown(html_file.read(), unsafe_allow_html=True)
+
+
     # File upload for CV
     cv_file = st.file_uploader("Upload CV", type=['pdf', 'docx', 'txt'])
     

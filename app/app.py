@@ -197,4 +197,4 @@ def main():
             final_analysis('oh')
 
 if __name__ == '__main__':
-    main
+    main()
