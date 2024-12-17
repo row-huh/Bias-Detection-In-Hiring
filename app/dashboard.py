@@ -1,12 +1,10 @@
 import os
 import streamlit as st
 import pandas as pd
-import plotly.express as px
-import folium
-from streamlit_folium import folium_static
 from io import BytesIO
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import letter
+import streamlit.components.v1 as components
 
 # Add the project root to the Python path if necessary
 import sys
@@ -34,27 +32,45 @@ st.write("A beginner-friendly dashboard for visualizing and interacting with the
 
 # Sidebar Navigation
 st.sidebar.header("Navigation")
-options = ["Overview", "Data Visualization", "Metrics and Map", "Final Analysis"]
+options = ["Overview", "Data Visualization", "Comparitive Analysis", "Final Analysis"]
 choice = st.sidebar.radio("Select a page:", options)
 
-# Example Data
-data = {
-    "State": ["California", "Texas", "Florida", "New York", "Illinois"],
-    "Population": [39538223, 29145505, 21538187, 20201249, 12812508],
-    "Gain/Loss": [200000, 150000, -50000, -300000, -100000]
+# Data for Gender Bias in Hiring over 10 years
+bias_data = {
+    "Year": [2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023],
+    "Bias_Level": [75, 70, 68, 65, 62, 60, 58, 55, 52, 50],  # Example data, represent bias percentage
 }
-df = pd.DataFrame(data)
 
-# Function to create map
-def create_map():
-    m = folium.Map(location=[37.0902, -95.7129], zoom_start=4)
-    for _, row in df.iterrows():
-        folium.Marker(
-            location=[37 + (row['Population'] % 10)/10, -95 + (row['Population'] % 10)/10],
-            popup=f"{row['State']}: {row['Population']:,}",
-            icon=folium.Icon(color="blue" if row['Gain/Loss'] > 0 else "red")
-        ).add_to(m)
-    return m
+# Data for Ageism in Hiring over 10 years
+ageism_data = {
+    "Year": [2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023],
+    "Bias_Level": [60, 58, 55, 53, 50, 48, 47, 45, 43, 40],  # Example data for ageism bias percentage
+}
+# Data for Racism in Hiring over 10 years
+racism_data = {
+    "Year": [2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023],
+    "Bias_Level": [80, 75, 72, 70, 68, 65, 63, 60, 58, 55],  # Example data for racism bias percentage
+}
+# Data for Gender Comparison in Software Company
+gender_data = {
+    "Gender": ["Male", "Female"],
+    "Count": [140, 50]  # Example data: 120 males and 80 females
+} 
+# Data for Gender Comparison in Software Company
+age_data = {
+    "Age": ["Below 40", "Above 40"],
+    "Count": [160, 60]  
+} 
+# Data for Gender Comparison in Software Company
+race_data = {
+    "Race": ["White", "Black", "Hispanic", "East Asians", "South Asians"],
+    "Count": [160, 60, 30, 120, 140]  
+} 
+# Convert to DataFrame
+df_bias = pd.DataFrame(bias_data)
+df_ageism = pd.DataFrame(ageism_data)
+df_racism = pd.DataFrame(racism_data)
+
 
 # Function for the file upload and first analysis (this is your first_page logic)
 def first_page():
@@ -123,7 +139,7 @@ def send_to_ai(cv_path, decision_path):
     decision = pdf_to_text(decision_path)
     user_req = f'''Turn the text delimited by triple backticks into the following columns:
     S.No,Age,Accessibility,EdLevel,Employment,Gender,MentalHealth,MainBranch,YearsCode,YearsCodePro,Country,PreviousSalary,HaveWorkedWith,ComputerSkills,Employed,Age_Category,Is_Employed,Skills_List,Skills_Count,Education_Level,Gender_Category,Previous_Salary,Years_Coding,Years_Professional_Coding
-    ```{cv}```
+    ```{cv}``` 
     RESPOND IN ONLY CSV VALUE - NO ADDITIONAL TEXT, ONLY THE VALUES IN COMMA SEPARATED FORMAT, DO NOT INCLUDE THE COLUMN NAMES EITHER
     '''
     ai = AI(SYSTEM_PROMPT)
@@ -131,7 +147,7 @@ def send_to_ai(cv_path, decision_path):
     ml_decision = 'BIASED'
     new_prompt = f""" 
     CV (delimited by triple backticks): ```{cv}```,
-    Decision (delimited by double backticks): ``{decision}``,
+    Decision (delimited by double backticks): ``{decision}```,
     Expert's prediction: {ml_decision}
     Write 500 words explaining why the decision is biased or justified.
     """
@@ -146,20 +162,183 @@ if choice == "Overview":
 
 elif choice == "Data Visualization":
     st.subheader("Data Visualization")
-    st.write("### Population Gain/Loss by State")
-    fig = px.bar(df, x="State", y="Gain/Loss", color="Gain/Loss", title="State Gain/Loss Overview")
-    st.plotly_chart(fig, use_container_width=True)
-    st.write("### Detailed Table")
-    st.dataframe(df)
 
-elif choice == "Metrics and Map":
-    st.subheader("Key Metrics and Map")
-    col1, col2, col3 = st.columns(3)
-    col1.metric("Total Population", f"{df['Population'].sum():,}")
-    col2.metric("Total Gain", f"{df[df['Gain/Loss'] > 0]['Gain/Loss'].sum():,}")
-    col3.metric("Total Loss", f"{df[df['Gain/Loss'] < 0]['Gain/Loss'].sum():,}")
-    st.write("### Population Map")
-    folium_static(create_map())
+    # Gender Bias in Hiring Bar Chart
+    st.write("### Gender Bias in Hiring over 10 Years")
+    chart_data = {
+        "chart": {
+            "type": "bar"
+        },
+        "series": [{
+            "name": "Bias Level (%)",
+            "data": df_bias["Bias_Level"].tolist()
+        }],
+        "xaxis": {
+            "categories": df_bias["Year"].tolist()
+        },
+        "title": {
+            "text": "Gender Bias in Hiring Over 10 Years"
+        },
+        "colors": ['#7f7fdb', '#33FF57', '#3357FF', '#FF33A6', '#FF9633', '#FF5733', '#33FF57', '#3357FF', '#FF33A6', '#FF9633']
+    }
+    components.html(f"""
+    <div id="chart"></div>
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <script>
+    var options = {chart_data};
+    var chart = new ApexCharts(document.querySelector('#chart'), options);
+    chart.render();
+    </script>
+    """, height=500)
+
+        # Ageism Bias in Hiring Bar Chart (updated to bar chart)
+    st.write("### Ageism Bias in Hiring over 10 Years")
+    ageism_chart_data = {
+        "chart": {
+            "type": "bar"  # Change the chart type to bar
+           
+        },
+        "series": [{
+            "name": "Bias Level (%)",
+            "data": df_ageism["Bias_Level"].tolist()
+        }],
+        "xaxis": {
+            "categories": df_ageism["Year"].tolist()
+        },
+        "title": {
+            "text": "Ageism Bias in Hiring Over 10 Years"
+        },
+        "colors": ['#f49230', '#33FF57', '#3357FF', '#FF33A6', '#FF9633', '#FF5733', '#33FF57', '#3357FF', '#FF33A6', '#FF9633']
+    }
+
+    components.html(f"""
+    <div id="ageism-chart"></div>
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <script>
+    var options = {ageism_chart_data};
+    var chart = new ApexCharts(document.querySelector('#ageism-chart'), options);
+    chart.render();
+    </script>
+    """, height=500)
+
+
+    # Detailed table of the bias data
+    st.write("### Detailed Table of Bias Data")
+    st.dataframe(df_bias)
+
+    # Racism Bias in Hiring Bar Chart (new chart)
+    st.write("### Racism Bias in Hiring over 10 Years")
+    racism_chart_data = {
+        "chart": {
+            "type": "bar"
+        },
+        "series": [{
+            "name": "Bias Level (%)",
+            "data": df_racism["Bias_Level"].tolist()
+        }],
+        "xaxis": {
+            "categories": df_racism["Year"].tolist()
+        },
+        "title": {
+            "text": "Racism Bias in Hiring Over 10 Years"
+        },
+        "colors": ['#c472ff', '#FF33A6', '#33FF57', '#3357FF', '#FF9633', '#FF5733', '#33FF57', '#3357FF', '#FF33A6', '#FF9633']
+    }
+    components.html(f"""
+    <div id="racism-chart"></div>
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <script>
+    var options = {racism_chart_data};
+    var chart = new ApexCharts(document.querySelector('#racism-chart'), options);
+    chart.render();
+    </script>
+    """, height=500)
+
+    # Detailed table of the bias data
+    st.write("### Detailed Table of Bias Data")
+    st.dataframe(df_bias)
+
+
+elif choice == "Comparitive Analysis":
+
+    # Pie chart configuration for Gender Comparison
+    gender_chart_data = {
+        "chart": {
+            "type": "pie",  # Set chart type to pie
+             "width": "400",  # Adjust the width of the pie chart
+             "height": "400"  # Adjust the height of the pie chart
+        },
+        "series": gender_data["Count"],  # The values to plot
+        "labels": gender_data["Gender"],  # Labels for each segment
+        "title": {
+            "text": "Gender Comparison in a Software Company"
+        },
+        "colors": ['#7f7fdb', '#0d0d70']  # Custom colors for male and female
+    }
+
+    # Render the pie chart in Streamlit
+    components.html(f"""
+    <div id="gender-chart"></div>
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <script>
+    var options = {gender_chart_data};
+    var chart = new ApexCharts(document.querySelector('#gender-chart'), options);
+    chart.render();
+    </script>
+    """, height=500)
+
+    # Pie chart configuration for AGE Comparison
+    age_chart_data = {
+        "chart": {
+            "type": "pie",  # Set chart type to pie
+             "width": "400",  # Adjust the width of the pie chart
+             "height": "400"  # Adjust the height of the pie chart
+        },
+        "series": age_data["Count"],  # The values to plot
+        "labels": age_data["Age"],  # Labels for each segment
+        "title": {
+            "text": "age Comparison in a Software Company"
+        },
+        "colors": ['#c472ff', '#6616a3']  # Custom colors for male and female
+    }
+
+    # Render the pie chart in Streamlit
+    components.html(f"""
+    <div id="age-chart"></div>
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <script>
+    var options = {age_chart_data};
+    var chart = new ApexCharts(document.querySelector('#age-chart'), options);
+    chart.render();
+    </script>
+    """, height=500)
+
+    # Pie chart for race
+    # Pie chart configuration for Gender Comparison
+    race_chart_data = {
+        "chart": {
+            "type": "pie",  # Set chart type to pie
+             "width": "400",  # Adjust the width of the pie chart
+             "height": "400"  # Adjust the height of the pie chart
+        },
+        "series": race_data["Count"],  # The values to plot
+        "labels": race_data["Race"],  # Labels for each segment
+        "title": {
+            "text": "race Comparison in a Software Company"
+        },
+        "colors": ['#6a040f', '#9d0208', '#d00000', '#dc2f02', '#e85d04' ]  # Custom colors for male and female
+    }
+
+    # Render the pie chart in Streamlit
+    components.html(f"""
+    <div id="race-chart"></div>
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <script>
+    var options = {race_chart_data};
+    var chart = new ApexCharts(document.querySelector('#race-chart'), options);
+    chart.render();
+    </script>
+    """, height=500)
 
 elif choice == "Final Analysis":
     if 'analysis_result' in st.session_state:
@@ -167,4 +346,4 @@ elif choice == "Final Analysis":
 
 # Footer
 st.write("---")
-st.write("Built with ❤️ using Streamlit and Plotly.")
+st.write("Built with ❤️ using Streamlit and ApexCharts.")
