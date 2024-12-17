@@ -14,7 +14,7 @@ project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 sys.path.insert(0, project_root)
 
 # Import necessary functions from the model (assuming these are in the model folder)
-from model.utility import *  # Assuming utility.py exists
+from utility import *   # Assuming utility.py exists
 from model.genai import *  # Assuming genai.py exists
 
 # Page Config
@@ -167,4 +167,4 @@ elif choice == "Final Analysis":
 
 # Footer
 st.write("---")
-st.write("Built with ❤️ using Streamlit and Plotly.")
+st.write("Built with ❤️ using Streamlit and Plotly. By Tecna's Tribe")

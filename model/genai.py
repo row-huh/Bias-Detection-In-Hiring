@@ -110,12 +110,14 @@ class AI:
 # Import joblib to load the saved model
 import joblib
 
-# Load the pipeline
-pipeline = joblib.load('hiring_model_pipeline.pkl')
-print("Pipeline loaded successfully!")
+
 
 
 def predict_hiring(input_data):
+
+    # Load the pipeline
+    pipeline = joblib.load('hiring_model_pipeline.pkl')
+    print("Pipeline loaded successfully!")
     """
     Predicts whether a candidate should be hired based on input data.
 
