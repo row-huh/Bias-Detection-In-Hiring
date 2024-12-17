@@ -47,6 +47,10 @@ h1{
 a{
     text-decoration: none !important;
 }
+img{
+    width: 150px;
+    height: auto;
+}
 .navbar {
     background: #1d232e;
     border-radius: 20px;
@@ -151,6 +155,24 @@ a{
 .st-emotion-cache-14553y9 p, .st-emotion-cache-14553y9 ol, .st-emotion-cache-14553y9 ul, .st-emotion-cache-14553y9 dl, .st-emotion-cache-14553y9 li {
     font-size: inherit;
     color: black;
+}
+.st-emotion-cache-1otqz59 h1, .st-emotion-cache-1otqz59 h2, .st-emotion-cache-1otqz59 h3, .st-emotion-cache-1otqz59 h4, .st-emotion-cache-1otqz59 h5, .st-emotion-cache-1otqz59 h6, .st-emotion-cache-1otqz59 span {
+    color: rgb(45, 0, 62);
+}
+.st-emotion-cache-1cvow4s p, .st-emotion-cache-1cvow4s ol, .st-emotion-cache-1cvow4s ul, .st-emotion-cache-1cvow4s dl, .st-emotion-cache-1cvow4s li {
+    font-size: inherit;
+    color: rgb(45, 0, 62);
+}
+.st-ak {
+    gap: 17px;
+}
+.st-emotion-cache-w9jsfw {
+    font-family: "Source Sans Pro", sans-serif;
+    color: rgb(250, 250, 250);
+    white-space: pre-line;
+    margin-top: 12px;
+     
+    word-break: break-word;
 }
 .landing-div{
     display: flex;

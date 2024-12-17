@@ -31,9 +31,14 @@ st.title("Neutral AI Project Dashboard")
 st.write("A beginner-friendly dashboard for visualizing and interacting with the Neutral AI project.")
 
 # Sidebar Navigation
-st.sidebar.header("Navigation")
+st.sidebar.header(" ")
+col1, col2 = st.sidebar.columns([1, 4])
+with col1:
+    st.image("C:/Users/HP/Desktop/Neutral/Neutral/app/static/circle.png", width=50)
+with col2:
+    st.text("Neutral")
 options = ["Overview", "Data Visualization", "Comparitive Analysis", "Final Analysis"]
-choice = st.sidebar.radio("Select a page:", options)
+choice = st.sidebar.radio("", options)
 
 # Data for Gender Bias in Hiring over 10 years
 bias_data = {
